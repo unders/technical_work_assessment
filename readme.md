@@ -1,4 +1,4 @@
-# Alluvial
+# Alluvial Technical Work Assessment
 
 ### Setup
 ```
@@ -14,6 +14,11 @@ task apicalls
 
 ### Technical Work Assessment Diagrams
 * https://app.terrastruct.com/diagrams/620968877
+
+### Docs
+* docs/overview.png
+* docs/exercise_1.png
+* docs/exercise_2.png
 
 ### Links
 * [Taskfile](https://taskfile.dev/usage/)
