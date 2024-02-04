@@ -1,0 +1,11 @@
+HTTP/2.0 200 OK
+Content-Length: 42
+Cf-Cache-Status: DYNAMIC
+Cf-Ray: 8502587bccb5ac22-GOT
+Content-Type: application/json
+Date: Sun, 04 Feb 2024 10:49:12 GMT
+Server: cloudflare
+Set-Cookie: _cfuvid=u9f8Zaz.k9V.dFZULhe2yNI3_nrOcOWWpKYC_tywVtg-1707043752416-0-604800000; path=/; domain=.g.alchemy.com; HttpOnly; Secure; SameSite=None
+X-Alchemy-Trace-Id: b2608ceb6d125efef3cc16966fd959f0
+
+{"jsonrpc":"2.0","id":3,"result":"0x36ea"}

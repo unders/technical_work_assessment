@@ -1,0 +1,105 @@
+# https://taskfile.dev
+
+version: '3'
+
+dotenv: ['dev.env', '{{.ENV}}/.env.', '{{.HOME}}/.env']
+
+tasks:
+  default:
+    cmds:
+      - clear && task --list
+    silent: true
+
+  ##
+  ## Tidy
+  ##
+  tidy:
+    desc: go mod tidy
+    cmds:
+      - go mod tidy
+
+  fmt:
+    desc: gci write . && gofumpt -l -w .
+    cmds:
+      - gci write .
+      - gofumpt -l -w .
+
+  ##
+  ## Lint
+  ##
+  govet:
+    cmds:
+      - go vet ./...
+
+  gosec:
+    cmds:
+      - gosec -quiet ./...
+
+  staticchecktestfalse:
+    cmds:
+      # Run unused check while skipping uses found in tests. This helps us
+      # identify non-test code that is only used from tests.
+      - staticcheck -tests=false ./...
+
+  staticcheck:
+    cmds:
+      - staticcheck ./...
+
+  gocritic:
+    cmds:
+      - gocritic check -enableAll -disable=unnamedResult,whyNoLint ./...
+
+  golangci-lint:
+    cmds:
+      - golangci-lint run ./... --timeout 5m
+
+  govulncheck:
+    cmds:
+      - govulncheck ./...
+
+  lint:
+    desc: Lints the go code
+    deps: [govet, gosec, staticcheck, staticchecktestfalse, gocritic, golangci-lint, govulncheck]
+
+
+  ##
+  ## test
+  ##
+  test:
+    desc: go test ./...
+    cmds:
+      - go test ./...
+
+  ##
+  ## run
+  ##
+  run:
+    desc: go run .
+    cmds:
+      - go run . --address=127.0.0.1:8080
+
+  apicalls:
+    desc: api calls
+    cmds:
+      - curl -i -X GET localhost:8080/metrics
+      - curl -i -X GET localhost:8080/healthz
+      - curl -i -X GET localhost:8080/eth/balance/0xfe3b557e8fb62b89f4916b721be55ceb828dbd73
+      - curl -i -X GET localhost:8080/eth/balance/0xfe3b557e8fb62b89f4916b721be55ceb828dbd73x
+      - curl -i -X GET localhost:8080/eth/balance/0xe41d2489571d322189246dafa5ebde1f4699f498
+
+
+  installtools:
+    desc: install go tools
+    cmds:
+      ## go install golang.org/dl/go1.21.6@latest
+      ## go1.21.6 download
+      ## go1.21.6 env GOROOT
+      ## export PATH=$HOME/sdk/go1.21.6/bin:$PATH
+      - go install mvdan.cc/gofumpt@v0.5.0
+      - go install github.com/daixiang0/gci@v0.12.1
+      - go install github.com/securego/gosec/v2/cmd/gosec@v2.18.2
+      - go install github.com/go-critic/go-critic/cmd/gocritic@v0.11.0
+      ## https://github.com/dominikh/go-tools:
+      - go install honnef.co/go/tools/cmd/staticcheck@v0.4.6
+      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.55.2
+      - go install golang.org/x/vuln/cmd/govulncheck@latest
