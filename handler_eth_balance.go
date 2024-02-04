@@ -11,7 +11,6 @@ import (
 	"alluvial/json"
 	"alluvial/metric"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/log"
 	"github.com/uptrace/bunrouter"
 )
 
@@ -80,7 +79,7 @@ func (h handlerEthBalance) serveJSON(w http.ResponseWriter, r *http.Request) {
 
 	body, err := stdjson.Marshal(resp)
 	if err != nil {
-		log.Error(err.Error(), "req", fmt.Sprintf("%s %s 500 Internal Server Error", r.Method, r.URL.RequestURI()))
+		h.log.Error(err.Error(), "req", fmt.Sprintf("%s %s 500 Internal Server Error", r.Method, r.URL.RequestURI()))
 
 		h.json.WriteInternalError(w)
 
@@ -91,7 +90,7 @@ func (h handlerEthBalance) serveJSON(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Info(fmt.Sprintf("%s %s 200 OK", r.Method, r.URL.RequestURI()))
+	h.log.Info(fmt.Sprintf("%s %s 200 OK", r.Method, r.URL.RequestURI()))
 }
 
 func (h handlerEthBalance) requestRead(ctx context.Context, w http.ResponseWriter, req *requestEthBalance, r *http.Request) error {
